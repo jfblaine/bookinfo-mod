@@ -1,0 +1,357 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: details
+      version: v1
+    name: details-v1
+    namespace: bookinfo
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: details
+        version: v1
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "true"
+        creationTimestamp: null
+        labels:
+          app: details
+          version: v1
+      spec:
+        containers:
+        - image: maistra/examples-bookinfo-details-v1:1.2.0
+          imagePullPolicy: IfNotPresent
+          name: details
+          ports:
+          - containerPort: 9080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: productpage
+      version: v1
+    name: productpage-v1
+    namespace: bookinfo
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: productpage
+        version: v1
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "true"
+        creationTimestamp: null
+        labels:
+          app: productpage
+          version: v1
+      spec:
+        containers:
+        - image: maistra/examples-bookinfo-productpage-v1:1.1.0
+          imagePullPolicy: IfNotPresent
+          name: productpage
+          ports:
+          - containerPort: 9080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: bookinfo-productpage
+        serviceAccountName: bookinfo-productpage
+        terminationGracePeriodSeconds: 30
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: ratings
+      version: v1
+    name: ratings-v1
+    namespace: bookinfo
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: ratings
+        version: v1
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "true"
+        creationTimestamp: null
+        labels:
+          app: ratings
+          version: v1
+      spec:
+        containers:
+        - env:
+          - name: SERVICE_VERSION
+            value: v1
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-ratings-v2@sha256:63afb22cab6b1eccdd07468570f616ef02b18ccfc420387a3a445e9d5411e597
+          imagePullPolicy: IfNotPresent
+          name: ratings
+          ports:
+          - containerPort: 9080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: bookinfo-ratings
+        serviceAccountName: bookinfo-ratings
+        terminationGracePeriodSeconds: 30
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: ratings
+      version: v2
+    name: ratings-v2
+    namespace: bookinfo
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: ratings
+        version: v2
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "true"
+        creationTimestamp: null
+        labels:
+          app: ratings
+          version: v2
+      spec:
+        containers:
+        - env:
+          - name: SERVICE_VERSION
+            value: v2
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-ratings-v2@sha256:63afb22cab6b1eccdd07468570f616ef02b18ccfc420387a3a445e9d5411e597
+          imagePullPolicy: IfNotPresent
+          name: ratings
+          ports:
+          - containerPort: 9080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: reviews
+      version: v1
+    name: reviews-v1
+    namespace: bookinfo
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: reviews
+        version: v1
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "true"
+        creationTimestamp: null
+        labels:
+          app: reviews
+          version: v1
+      spec:
+        containers:
+        - env:
+          - name: SERVICE_VERSION
+            value: v1
+          - name: ENABLE_RATINGS
+            value: "false"
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2@sha256:eb1c00aa3d78370800ed2f1f3b3963e221c46f6007f2522a78e8d5f037668c71
+          imagePullPolicy: Always
+          name: reviews
+          ports:
+          - containerPort: 9080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: bookinfo-reviews
+        serviceAccountName: bookinfo-reviews
+        terminationGracePeriodSeconds: 30
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: reviews
+      version: v2
+    name: reviews-v2
+    namespace: bookinfo
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: reviews
+        version: v2
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "true"
+        creationTimestamp: null
+        labels:
+          app: reviews
+          version: v2
+      spec:
+        containers:
+        - env:
+          - name: SERVICE_VERSION
+            value: v2
+          - name: ENABLE_RATINGS
+            value: "true"
+          - name: RATINGS_SERVICE_VERSION
+            value: v1
+          - name: STAR_COLOR
+            value: black
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2@sha256:eb1c00aa3d78370800ed2f1f3b3963e221c46f6007f2522a78e8d5f037668c71
+          imagePullPolicy: Always
+          name: reviews
+          ports:
+          - containerPort: 9080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: bookinfo-reviews
+        serviceAccountName: bookinfo-reviews
+        terminationGracePeriodSeconds: 30
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: reviews
+      version: v3
+    name: reviews-v3
+    namespace: bookinfo
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: reviews
+        version: v3
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "true"
+        creationTimestamp: null
+        labels:
+          app: reviews
+          version: v3
+      spec:
+        containers:
+        - env:
+          - name: SERVICE_VERSION
+            value: v3
+          - name: ENABLE_RATINGS
+            value: "true"
+          - name: RATINGS_SERVICE_VERSION
+            value: v2
+          - name: STAR_COLOR
+            value: red
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2@sha256:eb1c00aa3d78370800ed2f1f3b3963e221c46f6007f2522a78e8d5f037668c71
+          imagePullPolicy: IfNotPresent
+          name: reviews
+          ports:
+          - containerPort: 9080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: bookinfo-reviews
+        serviceAccountName: bookinfo-reviews
+        terminationGracePeriodSeconds: 30
+kind: List

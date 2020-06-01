@@ -1,0 +1,28 @@
+# http://bookinfo-gateway.apps.ocp4poc.example.com/productpage
+
+#BEGIN
+cd ~/istio-demo-yamls
+
+# no istio
+/root/gitstuff/bookinfo-mod/istio-demo-yamls/00-no-istio.sh
+
+# initial state blue/green
+oc apply -f /root/gitstuff/bookinfo-mod/istio-demo-yamls/01-initial-state-blue-green.yaml
+
+# flipped state blue/green
+oc apply -f /root/gitstuff/bookinfo-mod/istio-demo-yamls/02-flipped-state-blue-green.yaml
+
+# demonstrate rollback
+oc apply -f /root/gitstuff/bookinfo-mod/istio-demo-yamls/01-initial-state-blue-green.yaml
+
+#canary with 15% to new version
+oc apply -f /root/gitstuff/bookinfo-mod/istio-demo-yamls/03-canary-with-15-percent-to-new-version.yaml
+
+#canary with 50% to new version
+oc apply -f /root/gitstuff/bookinfo-mod/istio-demo-yamls/04-canary-with-50-percent-to-new-version.yaml
+
+#canary with 100% to new version
+oc apply -f /root/gitstuff/bookinfo-mod/istio-demo-yamls/05-canary-with-100-percent-to-new-version.yaml
+
+#canary based on user id
+oc apply -f /root/gitstuff/bookinfo-mod/istio-demo-yamls/06-canary-based-on-user-id.yaml
