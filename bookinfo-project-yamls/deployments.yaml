@@ -31,8 +31,8 @@ items:
           version: v1
       spec:
         containers:
-        - image: maistra/examples-bookinfo-details-v1:1.2.0
-          imagePullPolicy: IfNotPresent
+        - image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-details-v1:1.2.0
+          imagePullPolicy: Always
           name: details
           ports:
           - containerPort: 9080
@@ -76,8 +76,8 @@ items:
           version: v1
       spec:
         containers:
-        - image: maistra/examples-bookinfo-productpage-v1:1.1.0
-          imagePullPolicy: IfNotPresent
+        - image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-productpage-v1:1.1.0
+          imagePullPolicy: Always
           name: productpage
           ports:
           - containerPort: 9080
@@ -89,8 +89,6 @@ items:
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
-        serviceAccount: bookinfo-productpage
-        serviceAccountName: bookinfo-productpage
         terminationGracePeriodSeconds: 30
 - apiVersion: apps/v1
   kind: Deployment
@@ -126,8 +124,8 @@ items:
         - env:
           - name: SERVICE_VERSION
             value: v1
-          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-ratings-v2@sha256:63afb22cab6b1eccdd07468570f616ef02b18ccfc420387a3a445e9d5411e597
-          imagePullPolicy: IfNotPresent
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-ratings-v2:latest
+          imagePullPolicy: Always
           name: ratings
           ports:
           - containerPort: 9080
@@ -139,8 +137,6 @@ items:
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
-        serviceAccount: bookinfo-ratings
-        serviceAccountName: bookinfo-ratings
         terminationGracePeriodSeconds: 30
 - apiVersion: apps/v1
   kind: Deployment
@@ -176,8 +172,8 @@ items:
         - env:
           - name: SERVICE_VERSION
             value: v2
-          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-ratings-v2@sha256:63afb22cab6b1eccdd07468570f616ef02b18ccfc420387a3a445e9d5411e597
-          imagePullPolicy: IfNotPresent
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-ratings-v2:latest
+          imagePullPolicy: Always
           name: ratings
           ports:
           - containerPort: 9080
@@ -226,7 +222,7 @@ items:
             value: v1
           - name: ENABLE_RATINGS
             value: "false"
-          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2@sha256:eb1c00aa3d78370800ed2f1f3b3963e221c46f6007f2522a78e8d5f037668c71
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2:1.1.0
           imagePullPolicy: Always
           name: reviews
           ports:
@@ -239,8 +235,6 @@ items:
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
-        serviceAccount: bookinfo-reviews
-        serviceAccountName: bookinfo-reviews
         terminationGracePeriodSeconds: 30
 - apiVersion: apps/v1
   kind: Deployment
@@ -282,7 +276,7 @@ items:
             value: v1
           - name: STAR_COLOR
             value: black
-          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2@sha256:eb1c00aa3d78370800ed2f1f3b3963e221c46f6007f2522a78e8d5f037668c71
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2:1.1.0
           imagePullPolicy: Always
           name: reviews
           ports:
@@ -295,8 +289,6 @@ items:
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
-        serviceAccount: bookinfo-reviews
-        serviceAccountName: bookinfo-reviews
         terminationGracePeriodSeconds: 30
 - apiVersion: apps/v1
   kind: Deployment
@@ -338,8 +330,8 @@ items:
             value: v2
           - name: STAR_COLOR
             value: red
-          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2@sha256:eb1c00aa3d78370800ed2f1f3b3963e221c46f6007f2522a78e8d5f037668c71
-          imagePullPolicy: IfNotPresent
+          image: image-registry.openshift-image-registry.svc:5000/bookinfo/examples-bookinfo-reviews-v2:1.1.0
+          imagePullPolicy: Always
           name: reviews
           ports:
           - containerPort: 9080
@@ -351,7 +343,5 @@ items:
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
-        serviceAccount: bookinfo-reviews
-        serviceAccountName: bookinfo-reviews
         terminationGracePeriodSeconds: 30
 kind: List
