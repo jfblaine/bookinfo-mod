@@ -8,8 +8,36 @@ spec:
     istio: ingressgateway
   servers:
   - hosts:
-    - bookinfo-gateway.apps.ocp4poc.example.com
+    - bookinfo-gateway.apps.5giot.telco.aws.redhat-demo.com
     port:
       name: http
       number: 80
       protocol: HTTP
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+  namespace: bookinfo
+spec:
+  gateways:
+  - bookinfo-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage
+        port:
+          number: 9080
